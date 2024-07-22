@@ -1,0 +1,68 @@
+@font-face {
+  font-family: "Karla";
+  src: url("./src/assets/fonts/Karla-VariableFont_wght.woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("./src/assets/fonts/Inter-VariableFont_slnt_wght.woff2");
+}
+
+/* ------------------- CSS Reset ------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+
+*:focus-visible {
+  outline: 0.125rem dotted red;
+  outline-offset: 0.125rem;
+}
+
+img,
+svg,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button {
+  font: inherit;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Karla", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  color: hsl(0, 0%, 95%);
+  background-color: grey;
+}
+
+.main {
+  width: 28rem;
+  height: 28rem;
+  background-color: #1e2227;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.text {
+  font-family: "Inter", sans-serif;
+  color: hsl(0, 0%, 85%);
+  margin-top: 1rem;
+}
