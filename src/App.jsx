@@ -1,5 +1,6 @@
 import React from "react"
 import { nanoid } from "nanoid"
+import Confetti from "react-confetti"
 import Die from "./components/Die"
 
 export default function App() {
@@ -41,11 +42,16 @@ export default function App() {
   }
 
   function handleRollClick() {
-    setDice((prevDice) =>
-      prevDice.map((die) => {
-        return die.isHeld ? die : generateNewDie()
-      })
-    )
+    if (!tenzies) {
+      setDice((prevDice) =>
+        prevDice.map((die) => {
+          return die.isHeld ? die : generateNewDie()
+        })
+      )
+    } else {
+      setTenzies(false)
+      setDice(getRandomDice())
+    }
   }
 
   const diceElements = dice.map((currentDie) => (
@@ -70,6 +76,7 @@ export default function App() {
       <button onClick={handleRollClick} className="btn__roll">
         {tenzies ? "New Game" : "Roll"}
       </button>
+      {tenzies && <Confetti />}
     </main>
   )
 }
