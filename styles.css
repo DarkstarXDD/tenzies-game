@@ -91,7 +91,11 @@ body {
 
 .die:hover {
   cursor: pointer;
-  transform: scale(1.15);
+  transform: scale(1.1);
+}
+
+.is-held {
+  background-color: hsl(144, 71%, 62%);
 }
 
 .btn__roll {

@@ -1,25 +1,52 @@
 import React from "react"
+import { nanoid } from "nanoid"
 import Die from "./components/Die"
 
 export default function App() {
-  function getRandomNumbers() {
-    let randomNumbers = []
-    let randomNumber = 0
-
-    for (let i = 0; i < 10; i++) {
-      randomNumber = Math.ceil(Math.random() * 6)
-      randomNumbers.push(randomNumber)
+  function generateNewDie() {
+    let randomNumber = Math.ceil(Math.random() * 6)
+    return {
+      id: nanoid(),
+      value: randomNumber,
+      isHeld: false,
     }
-    return randomNumbers
   }
 
-  const [dieNumbers, setDieNumbers] = React.useState(getRandomNumbers)
+  function getRandomDice() {
+    let randomDice = []
+    for (let i = 0; i < 10; i++) {
+      randomDice.push(generateNewDie())
+    }
+    return randomDice
+  }
 
-  const dice = dieNumbers.map((dieNumber) => <Die value={dieNumber} />)
+  const [dice, setDice] = React.useState(getRandomDice)
+
+  function holdDice(id) {
+    setDice((prevDice) =>
+      prevDice.map((die) => {
+        return die.id === id ? { ...die, isHeld: !die.isHeld } : die
+      })
+    )
+  }
 
   function handleRollClick() {
-    setDieNumbers(getRandomNumbers())
+    setDice((prevDice) =>
+      prevDice.map((die) => {
+        return die.isHeld ? die : generateNewDie()
+      })
+    )
   }
+
+  const diceElements = dice.map((currentDie) => (
+    <Die
+      key={currentDie.id}
+      id={currentDie.id}
+      value={currentDie.value}
+      isHeld={currentDie.isHeld}
+      holdDice={holdDice}
+    />
+  ))
 
   return (
     <main className="main">
@@ -29,7 +56,7 @@ export default function App() {
         current value between rolls.
       </p>
 
-      <div className="die-group">{dice}</div>
+      <div className="die-group">{diceElements}</div>
       <button onClick={handleRollClick} className="btn__roll">
         Roll
       </button>
