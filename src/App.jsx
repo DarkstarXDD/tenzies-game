@@ -22,6 +22,16 @@ export default function App() {
 
   const [dice, setDice] = React.useState(getRandomDice)
 
+  const [tenzies, setTenzies] = React.useState(false)
+
+  React.useEffect(() => {
+    const isAllHeld = dice.every((die) => die.isHeld)
+    const isAllSameValue = dice.every((die) => die.value === dice[0].value)
+    if (isAllHeld && isAllSameValue) {
+      setTenzies(true)
+    }
+  }, [dice])
+
   function holdDice(id) {
     setDice((prevDice) =>
       prevDice.map((die) => {
@@ -58,7 +68,7 @@ export default function App() {
 
       <div className="die-group">{diceElements}</div>
       <button onClick={handleRollClick} className="btn__roll">
-        Roll
+        {tenzies ? "New Game" : "Roll"}
       </button>
     </main>
   )
