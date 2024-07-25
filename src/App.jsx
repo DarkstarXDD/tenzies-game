@@ -76,7 +76,7 @@ export default function App() {
       <button onClick={handleRollClick} className="btn__roll">
         {tenzies ? "New Game" : "Roll"}
       </button>
-      {tenzies && <Confetti />}
+      {tenzies && <Confetti width={window.innerWidth} />}
     </main>
   )
 }
