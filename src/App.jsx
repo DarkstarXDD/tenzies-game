@@ -1,9 +1,16 @@
 import React from "react"
 import { nanoid } from "nanoid"
 import Confetti from "react-confetti"
+import Score from "./components/Score"
 import Die from "./components/Die"
 
 export default function App() {
+  const [isActive, setIsActive] = React.useState(false)
+  const [time, setTime] = React.useState(0)
+  const [rolls, setRolls] = React.useState(0)
+  const [dice, setDice] = React.useState(getRandomDice)
+  const [tenzies, setTenzies] = React.useState(false)
+
   function generateNewDie() {
     let randomNumber = Math.ceil(Math.random() * 6)
     return {
@@ -21,18 +28,6 @@ export default function App() {
     return randomDice
   }
 
-  const [dice, setDice] = React.useState(getRandomDice)
-
-  const [tenzies, setTenzies] = React.useState(false)
-
-  React.useEffect(() => {
-    const isAllHeld = dice.every((die) => die.isHeld)
-    const isAllSameValue = dice.every((die) => die.value === dice[0].value)
-    if (isAllHeld && isAllSameValue) {
-      setTenzies(true)
-    }
-  }, [dice])
-
   function holdDice(id) {
     setDice((prevDice) =>
       prevDice.map((die) => {
@@ -43,16 +38,39 @@ export default function App() {
 
   function handleRollClick() {
     if (!tenzies) {
+      setRolls((prevRoll) => prevRoll + 1)
       setDice((prevDice) =>
         prevDice.map((die) => {
           return die.isHeld ? die : generateNewDie()
         })
       )
     } else {
+      setIsActive(true)
+      setRolls(0)
       setTenzies(false)
       setDice(getRandomDice())
     }
   }
+
+  React.useEffect(() => {
+    let intervalId
+
+    if (isActive) {
+      intervalId = setInterval(() => {
+        setTime((prevTime) => prevTime + 1)
+      }, 1000)
+    }
+
+    return () => clearInterval(intervalId)
+  }, [isActive])
+
+  React.useEffect(() => {
+    const isAllHeld = dice.every((die) => die.isHeld)
+    const isAllSameValue = dice.every((die) => die.value === dice[0].value)
+    if (isAllHeld && isAllSameValue) {
+      setTenzies(true)
+    }
+  }, [dice])
 
   const diceElements = dice.map((currentDie) => (
     <Die
@@ -71,6 +89,8 @@ export default function App() {
         Roll until all dice are the same. Click each die to freeze it at its
         current value between rolls.
       </p>
+
+      <Score rolls={rolls} time={time} />
 
       <div className="die-group">{diceElements}</div>
       <button onClick={handleRollClick} className="btn__roll">

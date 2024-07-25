@@ -71,6 +71,17 @@ body {
   color: hsl(0, 0%, 85%);
 }
 
+.score {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  border: 2px solid hsl(0, 0%, 85%);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+}
+
 .die-group {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -131,6 +142,13 @@ body {
 }
 
 @media (min-width: 36rem) {
+  .score {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.5rem;
+    gap: 2rem;
+  }
+
   .die {
     width: 5rem;
     height: 5rem;
