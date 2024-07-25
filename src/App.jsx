@@ -29,6 +29,9 @@ export default function App() {
   }
 
   function holdDice(id) {
+    if (!tenzies) {
+      setIsActive(true)
+    }
     setDice((prevDice) =>
       prevDice.map((die) => {
         return die.id === id ? { ...die, isHeld: !die.isHeld } : die
@@ -38,6 +41,9 @@ export default function App() {
 
   function handleRollClick() {
     if (!tenzies) {
+      if (!isActive) {
+        setIsActive(true)
+      }
       setRolls((prevRoll) => prevRoll + 1)
       setDice((prevDice) =>
         prevDice.map((die) => {
@@ -45,6 +51,7 @@ export default function App() {
         })
       )
     } else {
+      setTime(0)
       setIsActive(true)
       setRolls(0)
       setTenzies(false)
@@ -55,14 +62,14 @@ export default function App() {
   React.useEffect(() => {
     let intervalId
 
-    if (isActive) {
+    if (isActive && !tenzies) {
       intervalId = setInterval(() => {
         setTime((prevTime) => prevTime + 1)
       }, 1000)
     }
 
     return () => clearInterval(intervalId)
-  }, [isActive])
+  }, [isActive, tenzies])
 
   React.useEffect(() => {
     const isAllHeld = dice.every((die) => die.isHeld)
